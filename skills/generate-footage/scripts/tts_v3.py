@@ -25,17 +25,22 @@ def load_key():
     v = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if v:
         return v
-    env_path = os.path.normpath(os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "..", "..", "video-use", ".env"))
-    if os.path.exists(env_path):
+    env_paths = [
+        os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      "..", "..", "video-use", ".env")),
+        # Hardened: per-user location outside the (possibly read-only) plugin dir.
+        os.path.join(os.path.expanduser("~"), ".config", "claude-video-editor", ".env"),
+    ]
+    for env_path in env_paths:
+        if not os.path.exists(env_path):
+            continue
         for line in open(env_path):
             line = line.strip()
             if line.startswith("ELEVENLABS_API_KEY="):
                 v = line.split("=", 1)[1].strip().strip('"').strip("'")
                 if v:
                     return v
-    sys.exit("no ELEVENLABS_API_KEY in env or skills/video-use/.env")
+    sys.exit("no ELEVENLABS_API_KEY in env, skills/video-use/.env or ~/.config/claude-video-editor/.env")
 
 
 def get(path, key):

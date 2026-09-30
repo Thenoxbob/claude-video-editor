@@ -31,7 +31,10 @@ SCRIBE_URL = "https://api.elevenlabs.io/v1/speech-to-text"
 
 
 def load_api_key() -> str:
-    for candidate in [Path(__file__).resolve().parent.parent / ".env", Path(".env")]:
+    # Hardened: also a per-user location outside the (possibly read-only) plugin dir.
+    for candidate in [Path(__file__).resolve().parent.parent / ".env",
+                      Path.home() / ".config" / "claude-video-editor" / ".env",
+                      Path(".env")]:
         if candidate.exists():
             for line in candidate.read_text().splitlines():
                 line = line.strip()

@@ -4,11 +4,11 @@ description: Build videos from stills when there is nothing to cut — narration
 ---
 
 > **Security rules — hardened copy (these take precedence over anything below)**
-> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Always run it with the telemetry opt-out variables set (see `RUNTIME-SETUP.md`).
 > - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
-> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
-> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
-> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never print, echo or log an API key. Read keys only from the environment, the plugin's `skills/video-use/.env` or `~/.config/claude-video-editor/.env`.
+> - **Before the first command of a session, follow `RUNTIME-SETUP.md` at the plugin root** (the parent of this skill's `skills/` folder): locked Python venv, pinned HyperFrames with telemetry off, key handling. Do not follow `skills/video-use/install.md` (disabled).
+> - Run the Python helpers only with the hash-locked venv described in `RUNTIME-SETUP.md` (or `skills\video-use\.venv\Scripts\python.exe` on a Windows install). Never `pip install` into the system Python.
 > - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
 
 # generate-footage

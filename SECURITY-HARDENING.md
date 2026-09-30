@@ -28,6 +28,22 @@ la configuration, d'où les correctifs ci-dessous.
 | 11 | Pas d'installeur Windows (`install.sh` supposait macOS/Linux). | Ajout de `install.ps1`. |
 | 12 | Chemin propre à l'auteur (`~/Developer/video-use`) dans `examples/captions/render-cmd.sh`. | Pointe vers le moteur fourni avec le plugin. |
 
+## Utilisation dans l'app Claude
+
+Dans l'app, les commandes s'exécutent dans un environnement Linux isolé, pas sur
+votre PC, et personne n'y lance l'installeur. `RUNTIME-SETUP.md` indique à Claude
+comment préparer chaque session : environnement Python créé depuis le fichier
+verrouillé (empreintes vérifiées), HyperFrames 0.8.96 avec télémétrie coupée à
+chaque commande, et Chromium de l'environnement pour le rendu.
+
+**Clé ElevenLabs dans l'app** : aucune fenêtre de saisie masquée n'existe, donc la
+clé doit être donnée dans la conversation, où elle reste dans l'historique.
+Utilisez une **clé restreinte** : droits limités à la transcription et à la voix,
+plafond de crédits, et révocation après usage. Claude la range dans
+`~/.config/claude-video-editor/.env` avec des droits restreints, sans jamais la
+réafficher. L'environnement étant éphémère, elle peut être redemandée à une
+session suivante.
+
 ## Ce qui reste à votre charge (risques résiduels)
 
 - **Confidentialité** : la transcription envoie l'**audio de vos vidéos** à ElevenLabs, et la voix off y envoie le **texte de vos scripts**. Claude a pour consigne de vous prévenir avant le premier envoi de chaque session. N'utilisez pas le plugin sur des rushs confidentiels si c'est un problème.

@@ -8,7 +8,7 @@ No timeline, no menus, no presets.
 
 > research the Stonehenge bluestone debate and make me a narrated explainer
 
-![Demo: the opening of a 2:46 research explainer made entirely with this plugin](docs/demo.gif)
+![Demo: the opening of a 2:46 research explainer made entirely with this plugin](https://github.com/assafkip/claude-video-editor/raw/3f07b69/docs/demo.gif)
 
 *This whole video — 16 painted scenes, documentary camera moves, atmosphere, the storytelling voiceover, 51 timed captions — was made by talking to Claude with this plugin. No camera, no timeline, no video-generation service: still keyframes animated deterministically with the [animate-stills recipe](recipes/04-animate-stills.md), narration by ElevenLabs v3. First 14 seconds above, silent; [watch the full video with sound](docs/demo.mp4).*
 
