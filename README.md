@@ -1,4 +1,16 @@
-# Claude video editor
+# Claude video editor — hardened fork
+
+> Security-hardened fork of [assafkip/claude-video-editor](https://github.com/assafkip/claude-video-editor)
+> (upstream commit `3f07b69`). Changes: pinned HyperFrames 0.8.96 (0 known npm
+> vulnerabilities vs 6 high in the upstream-tested version), hash-locked Python deps,
+> HyperFrames telemetry disabled, SRI on CDN scripts, Windows installer, optional
+> **local NVIDIA GPU transcription** (no ElevenLabs key) and **NVENC export**.
+> Full list and residual risks: [SECURITY-HARDENING.md](SECURITY-HARDENING.md) (in French).
+> Original work © Assaf Kipnis, MIT + Commons Clause — see [LICENSE](LICENSE).
+
+```bash
+git clone https://github.com/Thenoxbob/claude-video-editor
+```
 
 **Use Claude to edit videos and add captions — or generate a video from nothing.**
 Drop your footage in a folder, tell Claude what you want, get `final.mp4` back.
