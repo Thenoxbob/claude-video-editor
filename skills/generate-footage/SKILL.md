@@ -3,6 +3,14 @@ name: generate-footage
 description: Build videos from stills when there is nothing to cut — narration first (ElevenLabs v3 with audio tags), then still keyframes from ANY source (AI image tools, screenshots, photos, HyperFrames-rendered HTML), animated deterministically with the animate-stills recipe (HyperFrames camera moves + GSAP atmosphere). Use when the user wants an explainer, documentary-style video, or any video built from generated or collected visuals instead of recorded footage.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # generate-footage
 
 The plugin's other entry point. `video-use` edits footage you HAVE. This skill
@@ -15,7 +23,7 @@ deterministic):
 ```
 script (with v3 audio tags)
   → eleven_v3 narration            (scripts/tts_v3.py)
-  → transcribe                     (npx hyperframes transcribe narration.mp3)
+  → transcribe                     (npx hyperframes@0.8.96 transcribe narration.mp3)
   → lock scene windows to sentence boundaries (word-level timestamps)
   → STILLS FROM ANYWHERE           (one keyframe per scene — see below)
   → animate-stills composition     (recipes/04-animate-stills.md, build_scenes.py)

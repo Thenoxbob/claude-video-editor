@@ -73,7 +73,7 @@ Notice the **rule of threes** everywhere: 3 benefits, 3 surfaces, 3 product name
 | 5 | **Iridescent gradient stage** | Wheel scenes (Dash/API/SDK) | Soft conic-gradient or pre-rendered video. Best as `<video muted loop>` for true chromatic shimmer. |
 | 6 | **Conical light beam** | Three-coins finale | `<div>` with `background: conic-gradient(from 180deg at 50% 0%, transparent, rgba(0,255,200,.15) 50%, transparent)`, blurred |
 | 7 | **Sparkle particles** | All grid scenes | 20–40 absolute-positioned `<div>` `+` shapes at random grid intersections, GSAP `stagger.from('random')` opacity tween, `repeat: -1, yoyo: true` |
-| 8 | **Subtle film grain** | Everywhere (super faint) | `npx hyperframes add grain-overlay` |
+| 8 | **Subtle film grain** | Everywhere (super faint) | `npx hyperframes@0.8.96 add grain-overlay` |
 | 9 | **Liquid-glass card** | Hero product card, player frames, UI panels | 4-stop diagonal gradient `rgba(255,255,255,.075/.025/.010/.055)` + `backdrop-filter: blur(14px) saturate(1.12)` + inner highlight `inset 0 1px 0 rgba(255,255,255,.22)` + thin 1px border. The inner highlight is the iOS-26 "liquid glass" tell. |
 | 10 | **Film strip (pure CSS)** | Footage / compositing beats | Single `repeating-linear-gradient(90deg, transparent 0-40px, #0d0d0d 40-44px, transparent 44-60px, rgba(255,255,255,.06) 60-80px, transparent 80-100px)` gives sprockets + perforations in one declaration. Animate via `translateX`. |
 | 11 | **Film grain (pure CSS, no PNG)** | Anywhere grain is wanted deterministically | Three radial-gradients at tile sizes 3/5/7px, each a 1px dot at a different position, alphas `.03/.02/.015`. Non-repeating look, fully deterministic, headless-safe. |
@@ -139,7 +139,7 @@ Notice the **rule of threes** everywhere: 3 benefits, 3 surfaces, 3 product name
 | **Slide-up phone reveal** | Device mockup enters from bottom edge with headline above | `tl.from(phone, { y: '100%', duration: 1, ease: 'power3.out' }, 0).from(headline, { y: 30, opacity: 0, duration: 0.6 }, 0.3)` |
 | **Wheel + side-panel pattern** | Central UI rotates while text panels slide in from L/R | `tl.to(wheel, { rotation: 120, duration: 1.5 })` then `.from(panel, { x: -100, opacity: 0, duration: 0.6 }, '<0.3')` |
 | **Floating cluster drift** | 3+ objects gently bob and drift continuously | `gsap.to(coins, { y: '-=15', duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: { each: 0.4, from: 'random' } })` |
-| **Shimmer sweep on hold** | A single chrome glint passes over the logo every few seconds | `npx hyperframes add shimmer-sweep` — set `data-interval` per design |
+| **Shimmer sweep on hold** | A single chrome glint passes over the logo every few seconds | `npx hyperframes@0.8.96 add shimmer-sweep` — set `data-interval` per design |
 | **Vignette breath** | Vignette opacity wobbles 0.7→0.9 to keep "still" frames alive | `gsap.to(vignette, { opacity: 0.9, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut' })` |
 | **Cut-the-curve vertical whip** | Default adjacent-beat transition — exit rides up with blur, entry rises from below with matching blur. Same direction on both sides, velocity matched at the cut. | **Exit (outgoing beat):** `tl.to(wrap, { y: -150, filter: "blur(30px)", duration: 0.33, ease: "power2.in" })`<br>**Entry (incoming beat):** `gsap.set(wrap, { y: 150, filter: "blur(30px)" });` then `tl.to(wrap, { y: 0, filter: "blur(0px)", duration: 1.0, ease: "power2.out" }, 0)` |
 | **Faux-cursor click event** | Full 7-tween sequence selling a UI interaction (click, ripple, target overshoot, settle) | 1. Cursor compress — `scale: 0.82, power4.in, 0.07s`<br>2. Target compress — `scale: 0.96, power4.in, 0.07s`<br>3. Ripple — `set(ripple, { scale: 0, opacity: 0.9 })` then `to({ scale: 2.5, opacity: 0, power2.out, 0.2s })`<br>4. Cursor release — `scale: 1, back.out(3), 0.3s`<br>5. Target overshoot — `scale: 1.02, elastic.out(1, 0.4), 0.2s`<br>6. Target settle — `scale: 1, power2.out, 0.2s`<br>**Critical:** SVG cursor's `transform-origin` MUST sit at the click-tip pixel (e.g. `transform-origin: 4.3px 2.6px`). |
@@ -149,14 +149,14 @@ Notice the **rule of threes** everywhere: 3 benefits, 3 surfaces, 3 product name
 
 | Transition | When to use | HF block / approach |
 |-----------|-------------|---------------------|
-| **Light-streak whip** | Default cut between scenes, especially energy beats | Custom div + GSAP, OR `npx hyperframes add whip-pan` |
-| **Cinematic zoom-through** | Going from text into 3D space | `npx hyperframes add cinematic-zoom` |
-| **Cross-warp morph** | One object becoming another (red card → teal coin) | `npx hyperframes add cross-warp-morph` |
+| **Light-streak whip** | Default cut between scenes, especially energy beats | Custom div + GSAP, OR `npx hyperframes@0.8.96 add whip-pan` |
+| **Cinematic zoom-through** | Going from text into 3D space | `npx hyperframes@0.8.96 add cinematic-zoom` |
+| **Cross-warp morph** | One object becoming another (red card → teal coin) | `npx hyperframes@0.8.96 add cross-warp-morph` |
 | **Color recolor (no cut)** | Showing two related ideas on same composition | CSS variables + GSAP tween — no shader needed |
 | **Slide-up reveal** | Product mockup intros | Plain GSAP `from y: 100%` |
 | **Crossfade with bright pulse** | Brand-reveal landing | Two layered scenes, brightness flash via white overlay tween 0→0.3→0 |
-| **Flash-through-white** | Major act break | `npx hyperframes add flash-through-white` |
-| **Swirl-vortex** | Product-family rotations (Dash/API/SDK) | `npx hyperframes add swirl-vortex` |
+| **Flash-through-white** | Major act break | `npx hyperframes@0.8.96 add flash-through-white` |
+| **Swirl-vortex** | Product-family rotations (Dash/API/SDK) | `npx hyperframes@0.8.96 add swirl-vortex` |
 | **Hard cut on action** | When a whip-streak peaks — that's the moment to cut | Just align scene `data-start` with the streak's mid-frame |
 
 ### 2.6 Pacing Discipline
@@ -351,18 +351,18 @@ Rule: anything with **iridescent reflections, chromatic shifts, or true 3D refra
 
 ```bash
 # Install once at the project root, then wire into compositions
-npx hyperframes add grain-overlay              # film grain (always on)
-npx hyperframes add shimmer-sweep              # logo glints
-npx hyperframes add whip-pan                   # scene transitions
-npx hyperframes add cinematic-zoom             # text dolly-through
-npx hyperframes add cross-warp-morph           # object morphs
-npx hyperframes add chromatic-radial-split     # color-flip moments
-npx hyperframes add flash-through-white        # act breaks
-npx hyperframes add swirl-vortex               # wheel rotations
-npx hyperframes add light-leak                 # speed/energy beats
-npx hyperframes add app-showcase               # phone/laptop reveals
-npx hyperframes add flowchart                  # node networks
-npx hyperframes add logo-outro                 # final CTA card
+npx hyperframes@0.8.96 add grain-overlay              # film grain (always on)
+npx hyperframes@0.8.96 add shimmer-sweep              # logo glints
+npx hyperframes@0.8.96 add whip-pan                   # scene transitions
+npx hyperframes@0.8.96 add cinematic-zoom             # text dolly-through
+npx hyperframes@0.8.96 add cross-warp-morph           # object morphs
+npx hyperframes@0.8.96 add chromatic-radial-split     # color-flip moments
+npx hyperframes@0.8.96 add flash-through-white        # act breaks
+npx hyperframes@0.8.96 add swirl-vortex               # wheel rotations
+npx hyperframes@0.8.96 add light-leak                 # speed/energy beats
+npx hyperframes@0.8.96 add app-showcase               # phone/laptop reveals
+npx hyperframes@0.8.96 add flowchart                  # node networks
+npx hyperframes@0.8.96 add logo-outro                 # final CTA card
 ```
 
 Don't write what you can install. The catalog has 38 blocks specifically for this aesthetic.
@@ -625,7 +625,7 @@ Before you ship any motion graphic, ask:
 - ❌ **Decorative grain or vignette.** They're not decoration — they're the unifying *texture*. They go on every scene, every time.
 - ❌ **Forgetting to render a draft and look at it.** Lint passing ≠ design working. **VIEW THE FRAMES.**
 - ❌ **`Math.random()` / `Date.now()` / unseeded PRNGs inside a render loop.** Renders must be deterministic frame-to-frame. Use harmonic hashes instead: `80 + 220 * Math.abs(Math.sin(i*0.7 + 0.3) * Math.cos(i*1.3 + 0.7))` gives "random-looking" reproducible values.
-- ❌ **Leaning on `npx hyperframes add <block>` for benchmark pieces.** The official HyperFrames launch video installs ZERO registry blocks — every scene is hand-built. The registry is for production velocity; hand-built scenes are the reference-quality move. Iterate fast with catalog blocks, then decide which ones deserve a bespoke rebuild for the hero moments.
+- ❌ **Leaning on `npx hyperframes@0.8.96 add <block>` for benchmark pieces.** The official HyperFrames launch video installs ZERO registry blocks — every scene is hand-built. The registry is for production velocity; hand-built scenes are the reference-quality move. Iterate fast with catalog blocks, then decide which ones deserve a bespoke rebuild for the hero moments.
 
 ---
 

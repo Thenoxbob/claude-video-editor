@@ -24,4 +24,4 @@
 - EDL(s): `edit/<edl>.json`
 
 ## To re-render after a tweak
-`<engine>/.venv/bin/python <engine>/helpers/render.py <edl> -o edit/<out>.mp4 --no-subtitles --no-loudnorm`
+`<engine>/.venv/bin/python (Windows: <engine>\.venv\Scripts\python.exe) <engine>/helpers/render.py <edl> -o edit/<out>.mp4 --no-subtitles --no-loudnorm`

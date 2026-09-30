@@ -37,7 +37,7 @@ No keys or accounts ship with this repo. Everything below is yours, stored local
 | Tool | Used for |
 |---|---|
 | `ffmpeg` | every cut, mux, and export |
-| Node 22+ | the HyperFrames CLI (`npx hyperframes`) |
+| Node 22+ | the HyperFrames CLI (`npx hyperframes@0.8.96`) |
 | Google Chrome | headless rendering of compositions |
 | Python 3.10+ | the video-use engine + helper scripts |
 
@@ -52,18 +52,30 @@ source you already use (AI image tools, screenshots, photos, or HTML the
 engine renders itself) — see the generate-footage skill.
 
 ## Install
+
+> **Hardened copy.** Pinned versions, hash-locked Python deps, telemetry off,
+> SRI on CDN scripts. What changed and why: [SECURITY-HARDENING.md](SECURITY-HARDENING.md).
+
+**Windows** (PowerShell, from this folder):
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+**macOS / Linux:**
 ```bash
-git clone https://github.com/assafkip/claude-video-editor && cd claude-video-editor
 ./install.sh
 ```
-`install.sh` checks the prereqs (`ffmpeg`, Node 22+, headless Chrome, Python), sets up
-the engine, and asks once for an [ElevenLabs key](https://elevenlabs.io/app/settings/api-keys)
-(used for transcription and v3 voiceover). The key is written to a local `.env` that git ignores — verify with `git check-ignore skills/video-use/.env`.
 
-Then register it with Claude Code:
+The installer checks the prereqs (`ffmpeg`, Node 22+, Chrome, Python 3.10+), builds
+the engine venv from `skills/video-use/requirements.lock` (hash-verified), disables
+HyperFrames telemetry, and asks once for an [ElevenLabs key](https://elevenlabs.io/app/settings/api-keys)
+with hidden input. The key is written to `skills/video-use/.env`, readable by your
+account only, and git-ignored.
+
+Then register it with Claude Code (from this folder):
 ```bash
-/plugin marketplace add ./           # from the repo dir
-/plugin install claude-video-editor
+/plugin marketplace add ./
+/plugin install claude-video-editor@claude-video-editor
 ```
 
 ## Use

@@ -3,6 +3,14 @@ name: hyperframes
 description: Create video compositions, animations, title cards, overlays, captions, voiceovers, audio-reactive visuals, and scene transitions in HyperFrames HTML. Use when asked to build any HTML-based video content, add captions or subtitles synced to audio, generate text-to-speech narration, create audio-reactive animation (beat sync, glow, pulse driven by music), add animated text highlighting (marker sweeps, hand-drawn circles, burst lines, scribble, sketchout), or add transitions between scenes (crossfades, wipes, reveals, shader transitions). Covers composition authoring, timing, media, and the full video production workflow. For CLI commands (init, lint, preview, render, transcribe, tts) see the hyperframes-cli skill.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # HyperFrames
 
 HTML is the source of truth for video. A composition is an HTML file with `data-*` attributes for timing, a GSAP timeline for animation, and CSS for appearance. The framework handles clip visibility, media playback, and timeline sync.
@@ -150,7 +158,7 @@ Sub-composition structure:
         /* scoped styles */
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
@@ -276,7 +284,7 @@ When no `visual-style.md` or animation direction is provided, follow [house-styl
 
 ## Output Checklist
 
-- [ ] `npx hyperframes lint` and `npx hyperframes validate` both pass
+- [ ] `npx hyperframes@0.8.96 lint` and `npx hyperframes@0.8.96 validate` both pass
 - [ ] Contrast warnings addressed (see Quality Checks below)
 - [ ] Animation choreography verified (see Quality Checks below)
 

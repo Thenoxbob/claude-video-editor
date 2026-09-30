@@ -19,7 +19,7 @@ HyperFrames renders the motion, your stills carry the look.
 ## The method
 
 1. **Voice first.** Narration with `tts_v3.py`, then
-   `npx hyperframes transcribe narration.mp3`. Sentence boundaries from the
+   `npx hyperframes@0.8.96 transcribe narration.mp3`. Sentence boundaries from the
    transcript become your scene windows. Never build visuals first.
 
 2. **Stills from anywhere.** One PNG per scene, named `kf-NN.png` (or any
@@ -54,8 +54,8 @@ HyperFrames renders the motion, your stills carry the look.
 
    ```bash
    python3 ../../skills/generate-footage/scripts/build_scenes.py manifest.json
-   npx hyperframes lint && npx hyperframes validate
-   npx hyperframes render     # output lands in renders/
+   npx hyperframes@0.8.96 lint && npx hyperframes@0.8.96 validate
+   npx hyperframes@0.8.96 render     # output lands in renders/
    ```
 
    `build_scenes.py` owns the scene layers and timeline between marker
@@ -80,7 +80,7 @@ HyperFrames renders the motion, your stills carry the look.
    Pick t1/t2 inside ONE scene window. Run it on your lowest-motion scene.
 
 7. **Audio + frame QA.** `ffmpeg -af volumedetect` (documentary speech mean
-   sits near -26 dB); `npx hyperframes snapshot .` for the contact sheet —
+   sits near -26 dB); `npx hyperframes@0.8.96 snapshot .` for the contact sheet —
    check text overflow, style drift, dead frames before publishing.
 
 ## The gotchas

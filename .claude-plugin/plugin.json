@@ -1,7 +1,7 @@
 {
   "name": "claude-video-editor",
-  "version": "0.2.0",
-  "description": "Edit any video by conversation \u2014 or generate one from nothing. Bundles four layers: video-use (transcript-driven cut/grade/subtitle engine), HeyGen HyperFrames (HTML+GSAP motion-graphics rendered with alpha), a motion-craft library, and generate-footage (AI keyframes, Wan 2.2 image-to-video clips, ElevenLabs v3 narration with audio tags). Drop footage in a folder and say 'edit this', or just describe the video and get final.mp4.",
+  "version": "0.2.0-hardened.1",
+  "description": "Edit any video by conversation — or generate one from nothing. Bundles four layers: video-use (transcript-driven cut/grade/subtitle engine), HeyGen HyperFrames (HTML+GSAP motion-graphics rendered with alpha), a motion-craft library, and generate-footage (AI keyframes, Wan 2.2 image-to-video clips, ElevenLabs v3 narration with audio tags). Drop footage in a folder and say 'edit this', or just describe the video and get final.mp4. [Hardened copy: pinned HyperFrames 0.8.96, hash-locked Python deps, telemetry off — see SECURITY-HARDENING.md]",
   "author": {
     "name": "Assaf Kipnis"
   },

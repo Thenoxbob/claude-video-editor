@@ -3,7 +3,7 @@
 ## Run the capture
 
 ```bash
-npx hyperframes capture <URL> -o captures/<project-name>
+npx hyperframes@0.8.96 capture <URL> -o captures/<project-name>
 ```
 
 No API keys required. The capture extracts design tokens, screenshots, fonts, and assets with DOM-context descriptions automatically.

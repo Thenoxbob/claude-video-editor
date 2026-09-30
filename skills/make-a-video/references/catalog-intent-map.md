@@ -1,6 +1,6 @@
 # Catalog Intent Map — "User Says X → Install Y"
 
-Used by `/make-a-video` Gate 5. Translates beginner language into `npx hyperframes add <block>` commands.
+Used by `/make-a-video` Gate 5. Translates beginner language into `npx hyperframes@0.8.96 add <block>` commands.
 
 ## The map
 
@@ -35,7 +35,7 @@ Used by `/make-a-video` Gate 5. Translates beginner language into `npx hyperfram
 | "ridged burn / fire effect" | `ridged-burn` |
 | "gravitational lens / warp" | `gravitational-lens` |
 
-For the full catalog browse live with `npx hyperframes catalog --type block` and `npx hyperframes catalog --type component`.
+For the full catalog browse live with `npx hyperframes@0.8.96 catalog --type block` and `npx hyperframes@0.8.96 catalog --type component`.
 
 ---
 
@@ -43,7 +43,7 @@ For the full catalog browse live with `npx hyperframes catalog --type block` and
 
 1. **From inside the project folder:**
    ```bash
-   npx hyperframes add <block-name>
+   npx hyperframes@0.8.96 add <block-name>
    ```
 2. **Block installs to** `<project>/compositions/<block-name>.html` (or `<project>/compositions/components/<name>.html` for components).
 3. **Immediately scope its CSS.** Catalog blocks ship with top-level `html, body { ... }` rules. When loaded as a sub-composition via `data-composition-src`, those rules bleed into the parent document.
@@ -84,7 +84,7 @@ Catalog blocks buy production velocity. When you have time, hand-building hero m
 
 ## Gotchas
 
-- After installing a block, always run `npx hyperframes lint` — the installer can create `data-composition-id` collisions if you already have one with the same name.
+- After installing a block, always run `npx hyperframes@0.8.96 lint` — the installer can create `data-composition-id` collisions if you already have one with the same name.
 - Blocks ship with their own fonts. If the user specified custom fonts in the style profile, override the block's font family with a scoped rule.
 - Some blocks (notably `logo-outro`) expect specific asset filenames — read the installed file and rename / re-path to the user's logo.
 - Shader blocks (the 14 shader transitions) use WebGL. In the Studio's software WebGL fallback, they can stall the master composition preview. Gate 7 routes users to individual composition URLs to work around this.

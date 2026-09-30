@@ -4,6 +4,14 @@ description: |
   Capture a website and create a HyperFrames video from it. Use when: (1) a user provides a URL and wants a video, (2) someone says "capture this site", "turn this into a video", "make a promo from my site", (3) the user wants a social ad, product tour, or any video based on an existing website, (4) the user shares a link and asks for any kind of video content. Even if the user just pastes a URL — this is the skill to use.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # Website to HyperFrames
 
 Capture a website, then produce a professional video from it.
@@ -85,7 +93,7 @@ Build each composition following the storyboard. After each one: self-review for
 
 Lint, validate, preview. Create a HANDOFF.md for multi-session continuity.
 
-**Gate:** `npx hyperframes lint` and `npx hyperframes validate` pass with zero errors.
+**Gate:** `npx hyperframes@0.8.96 lint` and `npx hyperframes@0.8.96 validate` pass with zero errors.
 
 ---
 

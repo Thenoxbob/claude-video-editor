@@ -37,7 +37,7 @@ Variations allowed: Space Grotesk or Geist for a tech feel, Instrument Serif for
 
 - Perspective grid floor (low-opacity lines)
 - Vignette layer on top
-- Film grain: `npx hyperframes add grain-overlay` installed as a component
+- Film grain: `npx hyperframes@0.8.96 add grain-overlay` installed as a component
 - Crosshair `+` markers at grid intersections (optional but recommended)
 
 ---

@@ -128,7 +128,7 @@ SCAFFOLD = """<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width={w}, height={h}" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
     <style>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ width: {w}px; height: {h}px; overflow: hidden; background: #0c0c0e; }}

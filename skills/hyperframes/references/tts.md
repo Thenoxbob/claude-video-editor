@@ -14,7 +14,7 @@ Match voice to content. Default is `af_heart`.
 | Documentation | `bf_emma`/`bm_george` | Clear British English      |
 | Casual        | `af_heart`/`af_sky`   | Approachable, natural      |
 
-Run `npx hyperframes tts --list` for all 54 voices (8 languages).
+Run `npx hyperframes@0.8.96 tts --list` for all 54 voices (8 languages).
 
 ## Speed Tuning
 
@@ -26,8 +26,8 @@ Run `npx hyperframes tts --list` for all 54 voices (8 languages).
 ## Usage
 
 ```bash
-npx hyperframes tts "Your script here" --voice af_nova --output narration.wav
-npx hyperframes tts script.txt --voice bf_emma --output narration.wav
+npx hyperframes@0.8.96 tts "Your script here" --voice af_nova --output narration.wav
+npx hyperframes@0.8.96 tts script.txt --voice bf_emma --output narration.wav
 ```
 
 In compositions:
@@ -46,8 +46,8 @@ In compositions:
 ## TTS + Captions Workflow
 
 ```bash
-npx hyperframes tts script.txt --voice af_heart --output narration.wav
-npx hyperframes transcribe narration.wav  # → transcript.json with word-level timestamps
+npx hyperframes@0.8.96 tts script.txt --voice af_heart --output narration.wav
+npx hyperframes@0.8.96 transcribe narration.wav  # → transcript.json with word-level timestamps
 ```
 
 ## Requirements

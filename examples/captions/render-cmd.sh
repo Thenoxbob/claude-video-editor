@@ -2,9 +2,9 @@
 # kipi video kit — render commands. Run from the kit dir after you've edited an EDL.
 set -euo pipefail
 
-# Engine lives here (its own git repo). render.py does the cut + overlay composite.
-VIDEO_USE="${VIDEO_USE:-$HOME/Developer/video-use}"
-HF_VERSION="0.6.70"   # pin — the composition was built against this
+# Engine = the plugin's bundled video-use (hardened: no external clone). render.py does the cut + overlay composite.
+VIDEO_USE="${VIDEO_USE:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../skills/video-use" && pwd)}"
+HF_VERSION="0.8.96"   # pin — the composition was built against this
 
 # ---------------------------------------------------------------------------
 # STEP 1 — render the caption overlays (one .mov per caption, alpha channel).
@@ -32,7 +32,7 @@ cap() {  # cap <num> <LABEL> <text> <outfile>
 #   --no-loudnorm   (source is silent; skip loudness pass)
 # ---------------------------------------------------------------------------
 compose() {  # compose <edl.json> <out.mp4>
-  python3 "$VIDEO_USE/helpers/render.py" "$1" -o "$2" --no-subtitles --no-loudnorm
+  "$VIDEO_USE/.venv/bin/python" "$VIDEO_USE/helpers/render.py" "$1" -o "$2" --no-subtitles --no-loudnorm
 }
 # compose edls/edl_walkthrough.json walkthrough_final.mp4
 # compose edls/edl_teaser.json      teaser_final.mp4

@@ -17,7 +17,7 @@ Used by `/make-a-video` Gates 7 and 8. Run before any render and before telling 
 - [ ] Captions are body-level siblings in `index.html` (not inside sub-compositions), each with `data-track-index ≥ 20`
 - [ ] No `Math.random()`, no `Date.now()`, no render-time `fetch()`
 - [ ] Catalog block CSS is scoped under `[data-composition-id="..."]` (no leaked `html, body { ... }`)
-- [ ] `npx hyperframes lint` — all errors fixed, warnings triaged
+- [ ] `npx hyperframes@0.8.96 lint` — all errors fixed, warnings triaged
 
 ---
 
@@ -36,7 +36,7 @@ Used by `/make-a-video` Gates 7 and 8. Run before any render and before telling 
 
 ## PREVIEW GATE 1 — Studio
 
-- [ ] `npx hyperframes preview` running (background)
+- [ ] `npx hyperframes@0.8.96 preview` running (background)
 - [ ] User given `http://localhost:3002`
 - [ ] If the project has shader blocks, user also given individual composition URLs (`http://localhost:3002/?comp=<id>`)
 - [ ] Hot-reload edits show up correctly
@@ -46,7 +46,7 @@ Used by `/make-a-video` Gates 7 and 8. Run before any render and before telling 
 
 ## Draft render
 
-- [ ] `npx hyperframes render --quality draft --output renders/<slug>-draft.mp4` completed
+- [ ] `npx hyperframes@0.8.96 render --quality draft --output renders/<slug>-draft.mp4` completed
 - [ ] No render errors or warnings
 - [ ] Output file exists and plays in a standard video player
 
@@ -83,7 +83,7 @@ Used by `/make-a-video` Gates 7 and 8. Run before any render and before telling 
 
 ## Final render
 
-- [ ] `npx hyperframes render --quality standard --output renders/<slug>-final.mp4`
+- [ ] `npx hyperframes@0.8.96 render --quality standard --output renders/<slug>-final.mp4`
 - [ ] File exists, size reasonable for duration (roughly 3–10 MB per 10 seconds at 1080p)
 - [ ] Final file plays cleanly in a standard player
 - [ ] Output path reported to the user

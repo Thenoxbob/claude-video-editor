@@ -4,10 +4,11 @@ version = "0.1.0"
 description = "Conversation-driven video editor skill for Claude Code"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
+# Hardened: only the packages the helpers actually import (librosa and matplotlib
+# were declared upstream but never imported). Exact versions + hashes live in
+# requirements.lock; install.sh / install.ps1 install from that lock.
 dependencies = [
     "requests",
-    "librosa",
-    "matplotlib",
     "pillow",
     "numpy",
 ]

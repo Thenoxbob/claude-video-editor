@@ -155,7 +155,7 @@ The slide distance DECAYS per word (80→12px) — mimics a camera settling.
 Vector animations that play inside a composition. Use for logos, character animations, icons.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js" integrity="sha384-QJhyLwEAJ1QGDFuDFSIcF7wOW5+hviPcPTIbF6kwqVndk6W5PXdvieLYv6v4SmAe" crossorigin="anonymous"></script>
 <dotlottie-player
   class="lottie"
   src="../assets/lottie/animation-0.json"
@@ -220,7 +220,7 @@ Terminal typing effect using `tl.call()` to update text content character by cha
   <span class="cursor" style="width:11px;height:22px;background:#333;display:inline-block;"></span>
 </div>
 <script>
-  var CMD = "npx hyperframes init";
+  var CMD = "npx hyperframes@0.8.96 init";
   var typed = document.getElementById("typed-text");
 
   // Cursor blinks
@@ -276,7 +276,7 @@ The glyph subtly reshapes as axes animate — optical size adjusts detail, weigh
 Animate an element along an arbitrary SVG path. Use for sliders following curves, particles along trajectories, guided reveals.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/MotionPathPlugin.min.js" integrity="sha384-bRevQK3DiusS1XALpRyWfXNcSVNuNxBOUk12Tk44IsnfepFlBwFe8h/82zWbDxqi" crossorigin="anonymous"></script>
 <div class="dot" style="width:20px;height:20px;background:#2a8a7c;border-radius:50%;"></div>
 <script>
   gsap.registerPlugin(MotionPathPlugin);

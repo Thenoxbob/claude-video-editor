@@ -3,6 +3,14 @@ name: video-studio
 description: Edit any video by conversation — the orchestrator for the bundled video pipeline. Use when the user wants to edit, cut, caption, grade, or add motion graphics to footage; drops a folder of clips and says "edit this"; or asks to make a promo/teaser/tutorial/short. Routes to video-use (the cut engine) and HyperFrames (motion-graphics overlays), with a motion-craft library for taste.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # video-studio
 
 One conversational pipeline for editing any video. Three layers compose; this skill

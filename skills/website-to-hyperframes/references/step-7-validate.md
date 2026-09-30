@@ -5,8 +5,8 @@
 Run in sequence. Fix all errors before proceeding to the next command.
 
 ```bash
-npx hyperframes lint
-npx hyperframes validate
+npx hyperframes@0.8.96 lint
+npx hyperframes@0.8.96 validate
 ```
 
 `lint` checks HTML structure statically — missing attributes, timeline registration, tween conflicts, CSS transform + GSAP conflicts (including inline styles).
@@ -17,7 +17,7 @@ npx hyperframes validate
 After lint and validate pass, capture snapshot frames to SEE your own output:
 
 ```bash
-npx hyperframes snapshot <project-dir> --at <beat-midpoints>
+npx hyperframes@0.8.96 snapshot <project-dir> --at <beat-midpoints>
 ```
 
 If the snapshot command isn't available, fall back to:
@@ -29,7 +29,7 @@ npx tsx packages/cli/src/cli.ts snapshot <project-dir> --at <beat-midpoints>
 Calculate the midpoint of each beat from your STORYBOARD.md timings. For a 4-beat video with beats at 0-5.8s, 5.8-15.0s, 15.0-22.5s, 22.5-25.3s:
 
 ```bash
-npx hyperframes snapshot <project-dir> --at 2.9,10.4,18.7,23.9
+npx hyperframes@0.8.96 snapshot <project-dir> --at 2.9,10.4,18.7,23.9
 ```
 
 This renders one frame per beat at the moment when content is most visible. Use timestamps where the most content is on screen — usually 60-70% into each beat, after entrances finish but before exits start.
@@ -66,7 +66,7 @@ If any frame has issues, go back to Step 6 and fix that composition before proce
 ## Preview
 
 ```bash
-npx hyperframes preview
+npx hyperframes@0.8.96 preview
 ```
 
 Open the studio in a browser. Scrub through every beat.
@@ -79,7 +79,7 @@ Write a `HANDOFF.md` for multi-session continuity:
 # Handoff — [Project Name]
 
 **Date:** [today]
-**Preview:** `npx hyperframes preview`
+**Preview:** `npx hyperframes@0.8.96 preview`
 
 ## What's Built
 
@@ -101,9 +101,9 @@ Write a `HANDOFF.md` for multi-session continuity:
 
 ## Commands
 
-npx hyperframes preview
-npx hyperframes lint
-npx hyperframes validate
-npx hyperframes snapshot <project-dir> --at <beat-midpoints>
-npx hyperframes render --output renders/final.mp4
+npx hyperframes@0.8.96 preview
+npx hyperframes@0.8.96 lint
+npx hyperframes@0.8.96 validate
+npx hyperframes@0.8.96 snapshot <project-dir> --at <beat-midpoints>
+npx hyperframes@0.8.96 render --output renders/final.mp4
 ```

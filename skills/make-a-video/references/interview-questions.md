@@ -64,13 +64,13 @@ Probe: industry · expertise level · platform they'll watch on · what should t
 - No narration — visuals + music only
 
 **Q8. If TTS:**
-- Voice choice (offer from `npx hyperframes tts --help`). Common: `am_adam`, `am_michael` (male US) · `af_bella`, `bf_emma` (female US/UK)
+- Voice choice (offer from `npx hyperframes@0.8.96 tts --help`). Common: `am_adam`, `am_michael` (male US) · `af_bella`, `bf_emma` (female US/UK)
 - Speaking pace (normal · slightly faster · slightly slower)
 
 **Q9. If face-cam or recorded voiceover:**
 - File path
 - Full-screen or corner? (bottom-right · bottom-left · top-right · top-left)
-- Need transcription? If yes: `npx hyperframes transcribe <file> --model small.en --json`
+- Need transcription? If yes: `npx hyperframes@0.8.96 transcribe <file> --model small.en --json`
 
 **Q10. Captions?**
 - Off

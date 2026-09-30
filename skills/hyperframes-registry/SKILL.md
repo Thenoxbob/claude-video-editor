@@ -3,6 +3,14 @@ name: hyperframes-registry
 description: Install and wire registry blocks and components into HyperFrames compositions. Use when running hyperframes add, installing a block or component, wiring an installed item into index.html, or working with hyperframes.json. Covers the add command, install locations, block sub-composition wiring, component snippet merging, and registry discovery.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # HyperFrames Registry
 
 The registry provides reusable blocks and components installable via `hyperframes add <name>`.
@@ -20,11 +28,11 @@ The registry provides reusable blocks and components installable via `hyperframe
 ## Quick reference
 
 ```bash
-hyperframes add data-chart              # install a block
-hyperframes add grain-overlay           # install a component
-hyperframes add shimmer-sweep --dir .   # target a specific project
-hyperframes add data-chart --json       # machine-readable output
-hyperframes add data-chart --no-clipboard  # skip clipboard (CI/headless)
+npx hyperframes@0.8.96 add data-chart              # install a block
+npx hyperframes@0.8.96 add grain-overlay           # install a component
+npx hyperframes@0.8.96 add shimmer-sweep --dir .   # target a specific project
+npx hyperframes@0.8.96 add data-chart --json       # machine-readable output
+npx hyperframes@0.8.96 add data-chart --no-clipboard  # skip clipboard (CI/headless)
 ```
 
 After install, the CLI prints which files were written and a snippet to paste into your host composition. The snippet is a starting point — you'll need to add `data-composition-id` (must match the block's internal composition ID), `data-start`, and `data-track-index` attributes when wiring blocks.
@@ -40,7 +48,7 @@ These paths are configurable in `hyperframes.json`:
 
 ```json
 {
-  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/v0.8.96/registry",
   "paths": {
     "blocks": "compositions",
     "components": "compositions/components",
@@ -96,7 +104,7 @@ Browse available items:
 
 ```bash
 # Read the registry manifest
-curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry/registry.json
+curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/v0.8.96/registry/registry.json
 ```
 
 Each item's `registry-item.json` contains: name, type, title, description, tags, dimensions (blocks only), duration (blocks only), and file list.

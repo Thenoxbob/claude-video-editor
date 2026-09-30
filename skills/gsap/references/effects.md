@@ -18,8 +18,8 @@ Reveal text character by character using GSAP's TextPlugin.
 ### Required Plugin
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/TextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/TextPlugin.min.js" integrity="sha384-Ij2CQUoTk7xBz0/w5MKglGMlo0Xx96NB7RMKmTOiHOoIJmaQaoJjehOAHPtv4TEK" crossorigin="anonymous"></script>
 <script>
   gsap.registerPlugin(TextPlugin);
 </script>

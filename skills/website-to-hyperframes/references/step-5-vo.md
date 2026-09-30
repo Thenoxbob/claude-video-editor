@@ -4,7 +4,7 @@
 
 Never use the first voice you find. Audition 2-3 voices with the first sentence of SCRIPT.md:
 
-- **Kokoro** (try first — free, no API key) — `npx hyperframes tts SCRIPT.md --voice af_nova --output narration.wav`. Runs locally on CPU. Requires Python 3.10+ (macOS system Python 3.9 won't work — if it fails with an onnxruntime error, move to the next option).
+- **Kokoro** (try first — free, no API key) — `npx hyperframes@0.8.96 tts SCRIPT.md --voice af_nova --output narration.wav`. Runs locally on CPU. Requires Python 3.10+ (macOS system Python 3.9 won't work — if it fails with an onnxruntime error, move to the next option).
 - **ElevenLabs** (best voice quality, widest selection) — `mcp__elevenlabs__search_voices` to browse, `mcp__elevenlabs__text_to_speech` to generate. Does not return timestamps — transcribe separately after.
 - **HeyGen TTS** (returns word timestamps automatically — saves a transcribe step) — `mcp__claude_ai_HeyGen__text_to_speech`. Use when you want timestamps without a separate transcription pass.
 
@@ -17,7 +17,7 @@ Generate the full script as `narration.wav` (or `.mp3`) in the project directory
 ## Transcribe for word-level timestamps
 
 ```bash
-npx hyperframes transcribe narration.wav
+npx hyperframes@0.8.96 transcribe narration.wav
 ```
 
 Produces `transcript.json` with `[{ text, start, end }]` for every word. These timestamps are the source of truth for all beat durations.

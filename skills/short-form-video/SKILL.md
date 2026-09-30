@@ -1,7 +1,15 @@
 ---
 name: short-form-video
-description: Build and iterate short-form vertical (9:16) videos in Hyperframes — TikTok/Reels/Shorts style. Use when Nate says "short-form video", "vertical video", "TikTok/Reels/Shorts", "make a short", "talking-head + motion graphics", or when the target is a 1080x1920 composition with face video + synced scene overlays + karaoke captions. Encodes the full May Shorts 19 playbook: face-mode choreography, audio-synced scene timing, karaoke captions, and the 10-rule quality checklist.
+description: "Build and iterate short-form vertical (9:16) videos in Hyperframes — TikTok/Reels/Shorts style. Use when Nate says \"short-form video\", \"vertical video\", \"TikTok/Reels/Shorts\", \"make a short\", \"talking-head + motion graphics\", or when the target is a 1080x1920 composition with face video + synced scene overlays + karaoke captions. Encodes the full May Shorts 19 playbook: face-mode choreography, audio-synced scene timing, karaoke captions, and the 10-rule quality checklist."
 ---
+
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
 
 # Short-Form Vertical Video (Hyperframes)
 
@@ -19,7 +27,7 @@ Short-form = 1080x1920 vertical, 10–30s, talking-head face + motion-graphic sc
 ## The playbook (high-level)
 
 1. **Audio is source of truth.** Edit audio FIRST (cut retakes, pauses). Save as `<name>-edit.mp4`. Measure exact duration with `ffprobe` — this is the composition's `data-duration`.
-2. **Transcribe the edited audio** with `npx hyperframes transcribe <edit>.mp4 --model small.en --json`, or if retiming an existing build with a `shift()` function in captions, keep the existing captions and just shift scene starts.
+2. **Transcribe the edited audio** with `npx hyperframes@0.8.96 transcribe <edit>.mp4 --model small.en --json`, or if retiming an existing build with a `shift()` function in captions, keep the existing captions and just shift scene starts.
 3. **Author scene boundaries in edited-time** — NEVER mix original-time and edited-time anchors in the same file. See "Audio-sync protocol" below.
 4. **Build the composition scaffold** (4 layers: ambient-bg, seam-treatment, captions, face) — see "Composition scaffold" below.
 5. **Author scenes with LOCAL offsets** relative to each scene's `data-start`. Each scene is its own sub-composition under `compositions/scene<N>-<label>.html`.
@@ -159,7 +167,7 @@ Minimum viable background stack:
 
 - **Rotate flavors.** No two consecutive transitions the same type. Six hard cuts in a row is the #1 tell for AI editing.
 - Face-mode transitions (`BOTTOM ↔ FULLSCREEN`) double as scene transitions when the mode changes between scenes.
-- For pure overlay scene-to-scene, install from registry: `push-up`, `flash-through-white`, `sdf-iris`, or the full shader-transitions pack. `npx hyperframes catalog --type block` to browse.
+- For pure overlay scene-to-scene, install from registry: `push-up`, `flash-through-white`, `sdf-iris`, or the full shader-transitions pack. `npx hyperframes@0.8.96 catalog --type block` to browse.
 
 ## The verification gate (mandatory — DO NOT ship without)
 
@@ -169,8 +177,8 @@ Lint passing ≠ design working. Never report a short-form render done until you
 
 ```bash
 cd video-projects/<slug>
-npx hyperframes lint
-npx hyperframes render --quality draft --output renders/<slug>-vN-draft.mp4
+npx hyperframes@0.8.96 lint
+npx hyperframes@0.8.96 render --quality draft --output renders/<slug>-vN-draft.mp4
 ```
 
 ### Step 2 — word-exact frame extraction
@@ -201,7 +209,7 @@ Call `Read` on every PNG so the image loads into context. Do NOT just list filen
 ### Step 5 — final render
 
 ```bash
-npx hyperframes render --quality standard --output renders/<slug>-vN.mp4
+npx hyperframes@0.8.96 render --quality standard --output renders/<slug>-vN.mp4
 ```
 
 Spot-check 3–4 frames from the final render (same timestamps, different folder `frames-vN-final/`) to confirm the standard-quality encode didn't change anything.

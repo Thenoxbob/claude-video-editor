@@ -18,17 +18,12 @@ Drop raw footage in a folder, chat with Claude Code, get `final.mp4` back. Works
 - **Self-evaluates the rendered output** at every cut boundary before showing you anything
 - **Persists session memory** in `project.md` so next week's session picks up where you left off
 
-## Setup prompt
+## Setup
 
-Paste into Claude Code, Codex, Hermes, Openclaw, or any agent with shell access:
-
-```text
-Set up https://github.com/browser-use/video-use for me.
-
-Read install.md first to install this repo, wire up ffmpeg, register the skill with whichever agent you're running under, and set up the ElevenLabs API key — ask me to paste it when you need it. Then read SKILL.md for daily usage, and always read helpers/ because that's where the editing scripts live. After install, don't transcribe anything on your own — just tell me it's ready and wait for me to drop footage into a folder.
-```
-
-The agent handles the clone, dependencies, skill registration, and prompts you once for your ElevenLabs API key (grab one at [elevenlabs.io/app/settings/api-keys](https://elevenlabs.io/app/settings/api-keys)).
+Hardened copy: don't ask an agent to clone or install anything, and don't paste
+your API key into a chat. Run the plugin's installer yourself (`install.sh` or
+`install.ps1` at the plugin root); it asks for the key with hidden input and
+stores it readable by your account only.
 
 Then point your agent at a folder of raw takes:
 
@@ -47,24 +42,9 @@ It inventories the sources, proposes a strategy, waits for your OK, then produce
 
 ## Manual install
 
-If you'd rather do it by hand:
-
-```bash
-# 1. Clone and symlink into your agent's skills directory
-git clone https://github.com/browser-use/video-use ~/Developer/video-use
-ln -sfn ~/Developer/video-use ~/.claude/skills/video-use        # Claude Code
-# ln -sfn ~/Developer/video-use ~/.codex/skills/video-use       # Codex
-
-# 2. Install deps
-cd ~/Developer/video-use
-uv sync                         # or: pip install -e .
-brew install ffmpeg             # required
-brew install yt-dlp             # optional, for downloading online sources
-
-# 3. Add your ElevenLabs API key
-cp .env.example .env
-$EDITOR .env                    # ELEVENLABS_API_KEY=...
-```
+Not applicable in this hardened copy: the engine is bundled with the plugin.
+Run the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows) from the
+plugin root — see `SECURITY-HARDENING.md`.
 
 ## How it works
 

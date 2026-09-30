@@ -12,7 +12,7 @@ You have a live site and want a social ad or product tour without designing anyt
 
 1. **Capture.** In the engine project:
    ```bash
-   npx hyperframes capture https://yoursite.com
+   npx hyperframes@0.8.96 capture https://yoursite.com
    ```
    This pulls the palette, fonts, copy, and full-page screenshots into `capture/`.
 

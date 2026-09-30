@@ -18,7 +18,7 @@ You have a product but no footage. No screen recording, no talking head. You wan
 
 5. **Check, then render.** `npm run check` until clean, `npm run render` for the MP4.
 
-6. **Self-review with the contact sheet.** `npx hyperframes snapshot .` makes a 5-frame contact sheet. Look at it before you publish. You are checking: text overflow, wrong font fallback, elements visible before their entrance, the zoom framing.
+6. **Self-review with the contact sheet.** `npx hyperframes@0.8.96 snapshot .` makes a 5-frame contact sheet. Look at it before you publish. You are checking: text overflow, wrong font fallback, elements visible before their entrance, the zoom framing.
 
 7. **GIF derivative** for READMEs and posts that want a loop:
    ```bash

@@ -9,7 +9,7 @@ User has an existing HyperFrames project and wants to add an animated chart alon
 ### 1. Install the block
 
 ```bash
-hyperframes add data-chart
+npx hyperframes@0.8.96 add data-chart
 ```
 
 ### 2. Wire into index.html
@@ -42,8 +42,8 @@ hyperframes add data-chart
 ### 3. Lint and preview
 
 ```bash
-hyperframes lint
-hyperframes preview
+npx hyperframes@0.8.96 lint
+npx hyperframes@0.8.96 preview
 ```
 
 ### 4. Customize (optional)

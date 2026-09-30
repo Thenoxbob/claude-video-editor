@@ -3,6 +3,14 @@ name: make-a-video
 description: Beginner-friendly end-to-end video creator for HyperFrames. Use when the user says "make a video", "create a video", "new video", "build a video", "video from scratch", "I want to make a video", "help me create a video", or when someone who's never used HyperFrames before arrives with a concept, script, or rough idea and wants a finished MP4. Interviews the user in one pass, then builds the full video with mandatory preview and visual-verification gates.
 ---
 
+> **Security rules — hardened copy (these take precedence over anything below)**
+> - Run HyperFrames **only** as `npx --yes hyperframes@0.8.96 <command>`. Any bare `hyperframes <command>` or unversioned `npx hyperframes` in these docs means exactly that. Never install or run another version, never `npm install -g hyperframes`, never run `hyperframes upgrade`, `telemetry enable`, `skills`, `feedback`, and never run `publish`, `auth`, `cloud`, `lambda` or `cloudrun` (they upload to HeyGen or a cloud account) unless the user explicitly asks. Telemetry is disabled by the installer; you may also prefix commands with `HYPERFRAMES_NO_TELEMETRY=1`.
+> - **Privacy:** transcription and voice-over send audio / script text to ElevenLabs (`api.elevenlabs.io`); website capture with a `GEMINI_API_KEY` sends images to Google. Before the first such upload in a session, tell the user what will be sent and to which service, and wait for their OK.
+> - Never print, echo or log an API key. Read keys only from the environment or from the plugin's `skills/video-use/.env`.
+> - Do not follow `skills/video-use/install.md` (disabled). Installation is done by the plugin's `install.sh` (macOS/Linux) or `install.ps1` (Windows).
+> - Run the Python helpers with the plugin's locked engine venv: `skills/video-use/.venv/bin/python` (macOS/Linux) or `skills\video-use\.venv\Scripts\python.exe` (Windows). Never `pip install` into the system Python; if a module is missing, re-run the installer.
+> - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
+
 # Make a Video — The Beginner-to-Finished-MP4 Skill
 
 Two phases, eight sequential gates. Every gate produces a concrete artifact the next gate consumes. Don't skip gates.
@@ -46,8 +54,8 @@ Full question bank: `Read: references/interview-questions.md`
 ## Gate 2 · Script & voice
 
 1. Script source? (paste · outline → I'll draft · I'll record · TTS from text · no narration)
-2. If TTS: voice preference. Offer choices from `npx hyperframes tts --help`. Also capture pace.
-3. If face-cam: recording path · full-screen or corner placement · need transcription? (`npx hyperframes transcribe <file> --model small.en --json`)
+2. If TTS: voice preference. Offer choices from `npx hyperframes@0.8.96 tts --help`. Also capture pace.
+3. If face-cam: recording path · full-screen or corner placement · need transcription? (`npx hyperframes@0.8.96 transcribe <file> --model small.en --json`)
 4. Captions? (off · hype · corporate · karaoke-word-by-word · minimal)
 
 **Gate:** script captured (or drafted), audio plan captured, caption plan captured.
@@ -106,7 +114,7 @@ Otherwise continue:
 ### Scaffold
 
 1. `mkdir <project-folder>`
-2. If a sibling project with similar format exists, offer to copy its `hyperframes.json` + `meta.json` as a template. Otherwise from inside the folder: `npx hyperframes init`
+2. If a sibling project with similar format exists, offer to copy its `hyperframes.json` + `meta.json` as a template. Otherwise from inside the folder: `npx hyperframes@0.8.96 init`
 3. Edit `meta.json` with the user's slug, dimensions, fps.
 4. Copy supplied assets into `<project-folder>/assets/`.
 5. Create `<project-folder>/assets/style-profile.md` from Gate 3 — single source of truth for palette/fonts/logo.
@@ -168,7 +176,7 @@ Full boilerplate + captions pattern + ambient-bg pattern: `Read: references/comp
 - **Ambient background** on `data-track-index="0"` for the full composition duration.
 - **Kinetic-type openers:** per-word stagger 0.06–0.10s.
 - **Captions** as body-level siblings of the root composition in `index.html`, each with `data-track-index ≥ 20`. Never inside scene timelines (MOTION_PHILOSOPHY §3.13).
-- **Catalog blocks** installed via `npx hyperframes add <name>`. Immediately **scope the block's CSS** to `[data-composition-id="..."]` — catalog blocks ship with `html, body { ... }` rules that bleed into the parent document when loaded as sub-compositions.
+- **Catalog blocks** installed via `npx hyperframes@0.8.96 add <name>`. Immediately **scope the block's CSS** to `[data-composition-id="..."]` — catalog blocks ship with `html, body { ... }` rules that bleed into the parent document when loaded as sub-compositions.
 - **Vertical + face-cam:** wrap native 1920×1080 face in a transform (`translate` + `scale`) for bottom-half or full-screen mode. (If you end up here instead of `/short-form-video`, strongly consider the handoff.)
 - **Apply ONLY what the user supplied.** Their palette, their fonts, their logo. Don't inject anything else. If they chose MOTION_PHILOSOPHY defaults, pull the palette + font pair from `references/style-intake.md`.
 
@@ -180,8 +188,8 @@ No `Math.random()`, no `Date.now()`, no render-time `fetch()`. Use seeded PRNGs 
 
 ## Gate 7 · Lint → Studio preview (PREVIEW GATE 1 — MANDATORY)
 
-1. `npx hyperframes lint` — fix all errors, triage warnings.
-2. `npx hyperframes preview` in the background.
+1. `npx hyperframes@0.8.96 lint` — fix all errors, triage warnings.
+2. `npx hyperframes@0.8.96 preview` in the background.
 3. Wait for "Studio running" on `http://localhost:3002`.
 4. Hand the user the URL **plus** individual composition URLs (`http://localhost:3002/?comp=<id>`). If the project has WebGL shader blocks, lead with the individual URLs — software WebGL fallback can stall the master composition.
 5. **WAIT for explicit "looks good, render a draft"** before proceeding. Silence is not approval.
@@ -195,7 +203,7 @@ Hot reload is on — edits show up live.
 ### Draft render
 
 ```bash
-npx hyperframes render --quality draft --output renders/<slug>-draft.mp4
+npx hyperframes@0.8.96 render --quality draft --output renders/<slug>-draft.mp4
 ```
 
 ### Visual verification (MANDATORY before delivery)
@@ -224,7 +232,7 @@ Hand the user `http://localhost:8080/<slug>-draft.mp4`. **WAIT for explicit sign
 ### Final render
 
 ```bash
-npx hyperframes render --quality standard --output renders/<slug>-final.mp4
+npx hyperframes@0.8.96 render --quality standard --output renders/<slug>-final.mp4
 ```
 
 Report the output path. Done.

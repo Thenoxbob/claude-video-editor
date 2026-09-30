@@ -5,7 +5,7 @@
 The top-level `registry.json` lists all available items:
 
 ```bash
-curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry/registry.json
+curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/v0.8.96/registry/registry.json
 ```
 
 Each entry has `name` and `type` (`hyperframes:example`, `hyperframes:block`, or `hyperframes:component`).
