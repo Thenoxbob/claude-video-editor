@@ -5,8 +5,20 @@
 #
 # Run from this folder:
 #   powershell -ExecutionPolicy Bypass -File .\install.ps1
+#   powershell -ExecutionPolicy Bypass -File .\install.ps1 -Gpu
+#
+# -Gpu : NVIDIA mode. Adds LOCAL transcription on the GPU (faster-whisper, no
+#        ElevenLabs key, audio stays on this PC) and sets NVENC as the default
+#        video encoder. Needs Python 3.12 and an NVIDIA GPU + recent driver.
+#        Downloads ~1.4 GB of hash-locked packages (CUDA libraries), and the
+#        Whisper model (~1.6 GB) on first transcription.
 
-$ErrorActionPreference = 'Stop'
+param([switch]$Gpu)
+
+# Native tools (pip, ffmpeg, nvidia-smi) write warnings to stderr; under 'Stop',
+# Windows PowerShell 5.1 turns redirected stderr into terminating errors.
+# Every step below checks $LASTEXITCODE explicitly instead.
+$ErrorActionPreference = 'Continue'
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $HfVersion = '0.8.96'   # single pinned HyperFrames version used everywhere in this plugin
 
@@ -38,15 +50,30 @@ if ($hasNode) {
 }
 
 # Python 3.10+ : prefer the py launcher, fall back to python.exe
+# (-Gpu needs exactly 3.12: the GPU lock file is built for it)
 $Py = $null
-if (Get-Command py -ErrorAction SilentlyContinue) { $Py = @('py', '-3') }
+$pyCheck = if ($Gpu) { 'import sys; sys.exit(0 if sys.version_info[:2] == (3,12) else 1)' }
+           else { 'import sys; sys.exit(0 if sys.version_info >= (3,10) else 1)' }
+if (Get-Command py -ErrorAction SilentlyContinue) { $Py = if ($Gpu) { @('py', '-3.12') } else { @('py', '-3') } }
 elseif (Get-Command python -ErrorAction SilentlyContinue) { $Py = @('python') }
 if (-not $Py) { Warn 'Python MISSING - install with:  winget install Python.Python.3.12'; $missing = $true }
 else {
     $pyExe = $Py[0]; $pyArgs = @($Py | Select-Object -Skip 1)
-    & $pyExe @pyArgs -c "import sys; sys.exit(0 if sys.version_info >= (3,10) else 1)"
-    if ($LASTEXITCODE -ne 0) { Warn 'Python 3.10+ required'; $missing = $true }
+    & $pyExe @pyArgs -c $pyCheck 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        if ($Gpu) { Warn 'Python 3.12 required for -Gpu - install with:  winget install Python.Python.3.12' }
+        else { Warn 'Python 3.10+ required' }
+        $missing = $true
+    }
     else { Say "python ok ($(& $pyExe @pyArgs --version))" }
+}
+
+if ($Gpu) {
+    if (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
+        $gpuName = (& nvidia-smi --query-gpu=name,driver_version --format=csv,noheader | Select-Object -First 1)
+        Say "nvidia gpu ok ($gpuName)"
+    }
+    else { Warn 'nvidia-smi not found - -Gpu needs an NVIDIA GPU with its driver installed.'; $missing = $true }
 }
 
 $chromePaths = @(
@@ -64,13 +91,40 @@ if ($missing) { Warn 'Install the required deps above, open a NEW terminal, then
 # ---------------------------------------------------------------------------
 $VU = Join-Path $Root 'skills\video-use'
 $VenvPy = Join-Path $VU '.venv\Scripts\python.exe'
-Say 'Building the engine venv from requirements.lock (hash-verified)...'
-if (-not (Test-Path $VenvPy)) { & $pyExe @pyArgs -m venv (Join-Path $VU '.venv') }
-& $VenvPy -m pip install --quiet --disable-pip-version-check --require-hashes --only-binary=:all: -r (Join-Path $VU 'requirements.lock')
+$Lock = if ($Gpu) { 'requirements-gpu-windows.lock' } else { 'requirements.lock' }
+Say "Building the engine venv from $Lock (hash-verified)..."
+if (Test-Path $VenvPy) {
+    & $VenvPy -c $pyCheck 2>$null
+    if ($LASTEXITCODE -ne 0) { Say 'existing venv uses another Python - rebuilding it'; & $pyExe @pyArgs -m venv --clear (Join-Path $VU '.venv') }
+}
+else { & $pyExe @pyArgs -m venv (Join-Path $VU '.venv') }
+if ($Gpu) { Say 'downloading ~1.4 GB (CUDA libraries) - this can take a few minutes...' }
+& $VenvPy -m pip install --quiet --disable-pip-version-check --require-hashes --only-binary=:all: -r (Join-Path $VU $Lock)
 if ($LASTEXITCODE -ne 0) { Warn 'pip install failed (see above).'; exit 1 }
 & $VenvPy -c 'import requests, numpy, PIL'
 if ($LASTEXITCODE -ne 0) { Warn 'engine import check failed.'; exit 1 }
 Say "engine ready: $VU\.venv"
+
+if ($Gpu) {
+    # CUDA check through the same DLL registration the transcriber uses
+    $helpers = Join-Path $VU 'helpers'
+    $probe = "import sys; sys.path.insert(0, r'$helpers'); import transcribe_local as t; t._register_windows_cuda_dlls(); import ctranslate2 as c; n = c.get_cuda_device_count(); print(n, sorted(c.get_supported_compute_types('cuda')) if n else []); sys.exit(0 if n else 1)"
+    $out = & $VenvPy -c $probe 2>&1
+    if ($LASTEXITCODE -eq 0) { Say "CUDA ok for local transcription (devices, compute types: $out)" }
+    else {
+        Warn "CUDA not usable by faster-whisper: $out"
+        Warn 'If the error mentions MSVCP140.dll: winget install Microsoft.VCRedist.2015+.x64 ; otherwise update the NVIDIA driver. Transcription will fall back to CPU (slow).'
+    }
+
+    # NVENC check: one-second test encode on the GPU
+    & ffmpeg -hide_banner -loglevel error -f lavfi -i testsrc=duration=1:size=1280x720:rate=30 -c:v h264_nvenc -f null - 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        $env:VIDEO_USE_ENCODER = 'h264_nvenc'
+        [Environment]::SetEnvironmentVariable('VIDEO_USE_ENCODER', 'h264_nvenc', 'User')
+        Say 'NVENC ok - GPU encoding set as default (VIDEO_USE_ENCODER=h264_nvenc)'
+    }
+    else { Warn 'NVENC test encode failed - exports stay on the CPU (libx264). Update ffmpeg (winget upgrade Gyan.FFmpeg) or the NVIDIA driver.' }
+}
 
 # ---------------------------------------------------------------------------
 # 3) ElevenLabs key - typed hidden, file readable by your account only.
@@ -92,6 +146,7 @@ elseif ((Test-Path $EnvFile) -and (Select-String -Path $EnvFile -Pattern '^ELEVE
 else {
     Write-Host ''
     Write-Host 'ElevenLabs API key - get one at elevenlabs.io/app/settings/api-keys'
+    if ($Gpu) { Write-Host '(optional with -Gpu: transcription runs locally; only needed for AI voice-over)' }
     $sec = Read-Host 'Paste it (input hidden; Enter to skip)' -AsSecureString
     $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
     try { $key = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) }

@@ -9,6 +9,7 @@ description: Build videos from stills when there is nothing to cut — narration
 > - Never print, echo or log an API key. Read keys only from the environment, the plugin's `skills/video-use/.env` or `~/.config/claude-video-editor/.env`.
 > - **Before the first command of a session, follow `RUNTIME-SETUP.md` at the plugin root** (the parent of this skill's `skills/` folder): locked Python venv, pinned HyperFrames with telemetry off, key handling. Do not follow `skills/video-use/install.md` (disabled).
 > - Run the Python helpers only with the hash-locked venv described in `RUNTIME-SETUP.md` (or `skills\video-use\.venv\Scripts\python.exe` on a Windows install). Never `pip install` into the system Python.
+> - **Transcription:** if the engine venv can `import faster_whisper` (Windows install with `-Gpu`), use `helpers/transcribe_local.py <video> --language <lang>` instead of `transcribe.py` / `transcribe_batch.py`: local GPU, no API key, audio never leaves the machine (no ElevenLabs notice needed). Use ElevenLabs only if local is unavailable or the user asks. **Rendering:** `render.py` defaults to 24 fps; for gameplay / Twitch footage pass `--fps source` (or 60). It uses NVENC automatically when `VIDEO_USE_ENCODER` is set.
 > - Never pipe downloaded content into a shell, and ask the user before adding any package, network endpoint or tool not already used by this plugin.
 
 # generate-footage

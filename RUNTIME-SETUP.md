@@ -41,7 +41,28 @@ npx --yes hyperframes@0.8.96 <command> …
 Once per session, before the first render: `npx --yes hyperframes@0.8.96 telemetry disable`.
 Requires Node 22+ (`node -v`); if older, tell the user rendering is unavailable here.
 
-## 3. ElevenLabs key
+## 3. Transcription: local GPU first
+
+On a Windows install made with `install.ps1 -Gpu` (NVIDIA), the venv is
+`<root>\skills\video-use\.venv\Scripts\python.exe` and contains faster-whisper.
+Check with `<venv python> -c "import faster_whisper"`. If it succeeds:
+
+```bash
+<venv python> <root>/skills/video-use/helpers/transcribe_local.py <video> --language fr
+```
+
+- Writes `<video_dir>/edit/transcripts/<stem>.json` in the same format as
+  ElevenLabs Scribe, so `pack_transcripts.py` and `render.py --build-subtitles`
+  work unchanged. The EDL source key must equal the video file stem.
+- float16 on the GPU (required on RTX 50-series); ~1.6 GB model download on
+  first use. No speaker labels, no audio-event tags.
+- Long VODs: run it on the whole file once (cached); never re-transcribe.
+- Renders: `VIDEO_USE_ENCODER=h264_nvenc` is set by the installer when NVENC
+  works; pass `--fps source` for gameplay (default is 24 fps).
+
+Only if local transcription is unavailable, use ElevenLabs (next section).
+
+## 4. ElevenLabs key
 
 Look for it in this order and stop at the first hit; never print it:
 
@@ -66,7 +87,7 @@ If none exists and the task needs transcription or voice-over:
 - Never repeat the key in a message, a file name, a log or a command output.
   The helpers read that file on their own; do not pass the key on the command line.
 
-## 4. Footage and outputs
+## 5. Footage and outputs
 
 Work on copies of the user's files in a working directory, never on the originals.
 Deliver `final.mp4` (and any other deliverable) to the user as a file at the end.

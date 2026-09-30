@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -56,6 +57,31 @@ SUB_FORCE_STYLE = (
 )
 
 # -------- Helpers ------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Hardened-copy addition: encoder + frame-rate selection.
+# Defaults keep upstream behavior (libx264, 24 fps). Set via CLI
+# (--encoder / --fps) or env (VIDEO_USE_ENCODER / VIDEO_USE_FPS).
+#   h264_nvenc / hevc_nvenc / av1_nvenc = NVIDIA GPU encoder (much faster)
+#   --fps source = keep the source frame rate (e.g. 60 fps gameplay)
+# ---------------------------------------------------------------------------
+ENCODER = os.environ.get("VIDEO_USE_ENCODER", "libx264")
+FPS = os.environ.get("VIDEO_USE_FPS", "24")
+
+
+def video_codec_args(x264_preset: str, crf: str) -> list[str]:
+    """Codec args for the selected encoder, mapping x264 preset/CRF to NVENC."""
+    if ENCODER.endswith("_nvenc"):
+        nv_preset = {"ultrafast": "p1", "fast": "p5", "medium": "p6"}.get(x264_preset, "p5")
+        cq = str(int(crf) + 1)  # NVENC CQ runs slightly sharper than x264 CRF
+        return ["-c:v", ENCODER, "-preset", nv_preset, "-tune", "hq",
+                "-rc", "vbr", "-cq", cq, "-b:v", "0"]
+    return ["-c:v", "libx264", "-preset", x264_preset, "-crf", crf]
+
+
+def fps_args() -> list[str]:
+    return [] if FPS in ("", "source") else ["-r", FPS]
 
 
 def run(cmd: list[str], quiet: bool = False) -> None:
@@ -202,8 +228,8 @@ def extract_segment(
         "-t", f"{duration:.3f}",
         "-vf", vf,
         "-af", af,
-        "-c:v", "libx264", "-preset", preset, "-crf", crf,
-        "-pix_fmt", "yuv420p", "-r", "24",
+        *video_codec_args(preset, crf),
+        "-pix_fmt", "yuv420p", *fps_args(),
         "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
         "-movflags", "+faststart",
         str(out_path),
@@ -558,7 +584,7 @@ def build_final_composite(
         "-filter_complex", filter_complex,
         "-map", out_label,
         "-map", "0:a",
-        "-c:v", "libx264", "-preset", "fast", "-crf", "18",
+        *video_codec_args("fast", "18"),
         "-pix_fmt", "yuv420p",
         "-c:a", "copy",
         "-movflags", "+faststart",
@@ -601,7 +627,25 @@ def main() -> None:
         action="store_true",
         help="Skip audio loudness normalization. Default is on (-14 LUFS, -1 dBTP, LRA 11).",
     )
+    ap.add_argument(
+        "--encoder",
+        default=None,
+        choices=["libx264", "h264_nvenc", "hevc_nvenc", "av1_nvenc"],
+        help="Video encoder (default: $VIDEO_USE_ENCODER or libx264). *_nvenc = NVIDIA GPU.",
+    )
+    ap.add_argument(
+        "--fps",
+        default=None,
+        help="Output frame rate, e.g. 24, 30, 60, or 'source' to keep it "
+             "(default: $VIDEO_USE_FPS or 24). Use 60 or source for gameplay.",
+    )
     args = ap.parse_args()
+    global ENCODER, FPS
+    if args.encoder:
+        ENCODER = args.encoder
+    if args.fps:
+        FPS = args.fps
+    print(f"encoder: {ENCODER}, fps: {FPS}")
 
     edl_path = args.edl.resolve()
     if not edl_path.exists():

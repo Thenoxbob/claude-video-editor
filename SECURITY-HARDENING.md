@@ -28,6 +28,25 @@ la configuration, d'où les correctifs ci-dessous.
 | 11 | Pas d'installeur Windows (`install.sh` supposait macOS/Linux). | Ajout de `install.ps1`. |
 | 12 | Chemin propre à l'auteur (`~/Developer/video-use`) dans `examples/captions/render-cmd.sh`. | Pointe vers le moteur fourni avec le plugin. |
 
+## Mode carte graphique NVIDIA (v0.3.0)
+
+`install.ps1 -Gpu` ajoute deux choses, sans dépendre d'un service en ligne :
+
+- **Transcription locale** (`skills/video-use/helpers/transcribe_local.py`) : Whisper
+  (faster-whisper 1.2.1, CTranslate2 4.8.2) sur la carte graphique, en float16
+  (obligatoire sur les RTX 50). Pas de clé, et l'audio ne quitte pas le PC. Le script
+  produit le même format que la transcription ElevenLabs. Testé ici sur processeur,
+  jusqu'aux sous-titres incrustés ; pas encore testé sur carte NVIDIA.
+- **Export NVENC** : `render.py --encoder h264_nvenc` (défini par défaut si le test
+  d'encodage réussit), plus `--fps source` pour garder 60 i/s. À l'origine, le plugin
+  forçait 24 i/s.
+
+Dépendances : `requirements-gpu-windows.lock`, 31 paquets en versions exactes avec
+empreintes SHA-256 (Windows, Python 3.12), dont les bibliothèques CUDA de NVIDIA
+(≈ 1,4 Go). Le modèle Whisper (≈ 1,6 Go) est téléchargé au premier usage depuis
+Hugging Face (`mobiuslabsgmbh/faster-whisper-large-v3-turbo`). Il n'est pas figé à
+une révision précise. Le format CTranslate2 ne contient pas de code exécutable.
+
 ## Utilisation dans l'app Claude
 
 Dans l'app, les commandes s'exécutent dans un environnement Linux isolé, pas sur
